@@ -44,3 +44,4 @@ src/main/resources/config.properties
 domain/configuration/domain.xml
 src/main/resources/META-INF/beans.xml
 src/main/resources/META-INF/persistence.xml
+docker-compose.yml
