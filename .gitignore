@@ -41,3 +41,5 @@ build/
 src/main/resources/config.properties
 **/config.properties
 domain/configuration/domain.xml
+src/main/resources/META-INF/beans.xml
+src/main/resources/META-INF/persistence.xml
