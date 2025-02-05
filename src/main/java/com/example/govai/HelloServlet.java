@@ -1,28 +1,43 @@
 package com.example.govai;
 
-import java.io.*;
+import com.example.govai.models.User;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-@WebServlet(name = "helloServlet", value = "/hello-servlet")
+@WebServlet("/hello")
 public class HelloServlet extends HttpServlet {
-    private String message;
 
-    public void init() {
-        message = "Hello World!";
-    }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
+        response.setCharacterEncoding("UTF-8");
 
-        // Hello
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>" + message + "</h1>");
-        out.println("</body></html>");
+        try (PrintWriter writer = response.getWriter()) {
+            writer.println("<!DOCTYPE html>");
+            writer.println("<html>");
+            writer.println("<head>");
+            writer.println("<title>Hello Servlet</title>");
+            writer.println("</head>");
+            writer.println("<body>");
+            writer.println("<h1>Hello from Servlet!</h1>");
+            writer.println("<p>The time on the server is: " + new java.util.Date() + "</p>");
+            writer.println("<p>Hello World! " + new User().getCpf() + "</p>");
+            writer.println("</body>");
+            writer.println("</html>");
+        }
     }
 
-    public void destroy() {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
     }
 }
