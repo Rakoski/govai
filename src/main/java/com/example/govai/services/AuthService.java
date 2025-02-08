@@ -1,18 +1,38 @@
 package com.example.govai.services;
 
+import com.example.govai.models.User;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 
-@ApplicationScoped
-public class JWTService {
+@Stateless
+public class AuthService {
     private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private static final long EXPIRATION_TIME = 864_000_000; // 10 days
+    private static final long EXPIRATION_TIME = 864_000_000;
+
+    @Inject
+    private UserService userService;
+
+    @Inject
+    private Pbkdf2PasswordHash passwordHash;
+
+    public String loginUser(String email, String password) {
+        User user = userService.findByEmail(email);
+
+        if (user == null || !passwordHash.verify(password.toCharArray(), user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+
+        return generateToken(user.getEmail());
+    }
 
     public String generateToken(String username) {
         return Jwts.builder()

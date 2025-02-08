@@ -14,7 +14,7 @@ import java.util.Map;
 public class LoginServlet extends HttpServlet {
 
     @Inject
-    private JWTService jwtService;
+    private AuthService authService;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         if (isValidCredentials(username, password)) {
-            String token = jwtService.generateToken(username);
+            String token = authService.generateToken(username);
 
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");

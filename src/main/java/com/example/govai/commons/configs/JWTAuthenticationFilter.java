@@ -1,5 +1,6 @@
-package com.example.govai.services;
+package com.example.govai.commons.configs;
 
+import com.example.govai.services.AuthService;
 import jakarta.inject.Inject;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -12,7 +13,7 @@ import java.io.IOException;
 public class JWTAuthenticationFilter implements Filter {
 
     @Inject
-    private JWTService jwtService;
+    private AuthService authService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -23,8 +24,8 @@ public class JWTAuthenticationFilter implements Filter {
 
         String token = extractToken(httpRequest);
 
-        if (token != null && jwtService.validateToken(token)) {
-            String username = jwtService.getUsernameFromToken(token);
+        if (token != null && authService.validateToken(token)) {
+            String username = authService.getUsernameFromToken(token);
             request.setAttribute("username", username);
             chain.doFilter(request, response);
         } else {

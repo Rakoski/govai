@@ -1,4 +1,4 @@
-package com.example.govai.beans;
+package com.example.govai.commons.configs;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
